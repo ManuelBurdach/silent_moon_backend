@@ -22,7 +22,7 @@ app.use(API_VERSION + "/user", user_router);
 
 //next routes
 
-//Server listen on PORT...
+//Server listen on PORT..
 app.listen(PORT, () => {
-  console.log("Server listen on port:", PORT);
+    console.log("Server listen on port:", PORT);
 });
