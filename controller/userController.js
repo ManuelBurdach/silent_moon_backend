@@ -5,6 +5,10 @@ import { createJWT } from "../util/token.js";
 // --------------------------------------------- DB_COLLECTION
 const USER_COL = process.env.USER_COL;
 
+// --------------------------------------------- USER_VERIY
+export const first_verify = async (req, res) => {
+  res.json({ id: 0, email: "", firstName: "guest", isLoggedIn: false });
+};
 // --------------------------------------------- USER_DETAILS
 export const details = async (req, res) => {
   try {
@@ -59,7 +63,7 @@ export const register = async (req, res) => {
     //check email exists
     const checkEmail = await db.collection(USER_COL).findOne({ email: req.body.email });
     if (checkEmail) {
-      res.status(550).end(); //550 = Email existiert schon
+      res.status(550).json({ id: 0, email: "", firstName: "guest", isLoggedIn: false }); //550 = Email existiert schon
     } else {
       //user register
       const result = await db.collection(USER_COL).insertOne(user);
