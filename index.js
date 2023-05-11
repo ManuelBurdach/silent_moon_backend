@@ -5,6 +5,7 @@ import cors from "cors";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import { user_router } from "./routes/userRoute.js";
+import { data_router } from "./routes/dataRoute.js";
 
 //Constants
 const PORT = process.env.PORT;
@@ -19,6 +20,9 @@ app.use(cookieParser());
 
 //All user_routes (api/v1/user)
 app.use(API_VERSION + "/user", user_router);
+
+//All data_routes (api/v1/data)
+app.use(API_VERSION + "/data", data_router);
 
 //next routes
 
