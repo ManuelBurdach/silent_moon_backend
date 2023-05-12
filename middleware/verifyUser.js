@@ -4,7 +4,6 @@ export const verifyUser = (req, res, next) => {
   try {
     const token = req.cookies.token;
     const result = verifyJWT(token);
-    console.log(result);
     req.claim = { id: result.id, email: result.email, firstName: result.firstName };
     next();
   } catch (err) {

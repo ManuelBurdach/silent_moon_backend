@@ -1,4 +1,5 @@
 // --------------------------------------------- IMPORTS
+import { ObjectId } from "mongodb";
 import { getDb } from "../util/dbConfig.js";
 import { createJWT } from "../util/token.js";
 
@@ -11,6 +12,52 @@ const guestObj = { id: 0, email: "", firstName: "guest", isLoggedIn: false };
 export const first_verify = async (req, res) => {
   res.json({ ...req.claim, isLoggedIn: true });
 };
+
+// --------------------------------------------- USER_REMINDER
+export const addReminder = async (req, res) => {
+  try {
+    const db = await getDb();
+    const result = await db.collection(USER_COL).updateOne(
+      { _id: new ObjectId(req.claim.id) },
+      {
+        $set: {
+          reminder: {
+            time: req.body.time,
+            su: req.body.su,
+            m: req.body.m,
+            t: req.body.t,
+            w: req.body.w,
+            th: req.body.th,
+            f: req.body.f,
+            s: req.body.s,
+          },
+        },
+      }
+    );
+    res.json("ok");
+  } catch (err) {
+    res.status(500).end();
+  }
+};
+
+// --------------------------------------------- USER_REMINDER
+export const addYogaFav = async (req, res) => {
+  try {
+    const db = await getDb();
+    const result = await db.collection(USER_COL).updateOne(
+      { _id: new ObjectId(req.claim.id) },
+      {
+        $push: {
+          favoriteYoga: req.body,
+        },
+      }
+    );
+    res.json("add a favorite");
+  } catch (err) {
+    res.status(500).end();
+  }
+};
+
 // --------------------------------------------- USER_DETAILS
 export const details = async (req, res) => {
   try {
@@ -55,7 +102,16 @@ export const register = async (req, res) => {
     //Default profilImg
     profilImg:
       "https://assets-global.website-files.com/62d9141584e7b750edcafa6a/638dbccab55f597a69a4e794_Christian_Peters_Trainer_Fullstack.png",
-    reminder: {}, //Muss noch angepasst werden (Default)
+    reminder: {
+      time: "12:00 am",
+      su: false,
+      m: false,
+      t: false,
+      w: false,
+      th: false,
+      f: false,
+      s: false,
+    }, //Muss noch angepasst werden (Default)
     favoriteYoga: [],
     favoriteMeditation: [],
   };
