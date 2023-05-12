@@ -69,7 +69,12 @@ export const register = async (req, res) => {
     } else {
       //user register
       const result = await db.collection(USER_COL).insertOne(user);
-      const token = createJWT({ id: result._id, email: result.email, firstName: result.firstName }); // auch in loggin func ändern
+      console.log(result);
+      const token = createJWT({
+        id: result.insertedId,
+        email: req.body.email,
+        firstName: req.body.firstName,
+      }); // auch in loggin func ändern
       res.cookie("token", token, { httpOnly: true, secure: true, sameSite: "none" });
       res.json({
         id: result.insertedId,
