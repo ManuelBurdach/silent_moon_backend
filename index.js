@@ -18,8 +18,11 @@ const app = express();
 app.use(cors({ origin: true, credentials: true }));
 app.use(morgan("dev"));
 app.use(express.json());
-app.use(cookieParser());
+
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(cookieParser());
 
 //All user_routes (api/v1/user)
 app.use(API_VERSION + "/user", user_router);
@@ -29,8 +32,7 @@ app.use(API_VERSION + "/data", data_router);
 
 //spotify
 app.post("/spotify/login", (req, res) => {
-    const code = req.body.storedCode;
-    console.log("STOREDCODE: " + code);
+    const code = req.body.code;
     const spotifyApi = new SpotifyWebApi({
         redirectUri: "http://localhost:5173/music",
         clientId: "ab15df07233441198e07735bdb853e7b",
@@ -39,14 +41,16 @@ app.post("/spotify/login", (req, res) => {
     spotifyApi
         .authorizationCodeGrant(code)
         .then((data) => {
-            res.cookie("spotifyAccessToken", data.body.access_token);
-            res.cookie("spotifyRefreshToken", data.body.refresh_token);
-            res.cookie("spotifyExpiresIn", data.body.expires_in);
+            const accessToken = data.body.access_token;
+            const refreshToken = data.body.refresh_token;
+            const expiresIn = data.body.expires_in;
+
+            res.cookie("accessToken", accessToken, { httpOnly: true });
 
             res.json({
-                accessToken: data.body.access_token,
-                refreshToken: data.body.refresh_token,
-                expiresIn: data.body.expires_in,
+                accessToken,
+                refreshToken,
+                expiresIn,
             });
         })
         .catch((err) => {
@@ -76,6 +80,11 @@ app.post("/spotify/refresh", (req, res) => {
             console.log(err);
             res.sendStatus(400);
         });
+});
+
+app.get("/test", (req, res) => {
+    console.log("COOKIE in /test route:", req.cookies.spotifyAccessToken);
+    res.sendStatus(200);
 });
 
 //next routes
