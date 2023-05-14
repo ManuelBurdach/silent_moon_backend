@@ -45,7 +45,7 @@ app.post("/spotify/login", (req, res) => {
             const refreshToken = data.body.refresh_token;
             const expiresIn = data.body.expires_in;
 
-            res.cookie("accessToken", accessToken, { httpOnly: true });
+            //res.cookie("accessToken", accessToken, { httpOnly: true });
 
             res.json({
                 accessToken,
