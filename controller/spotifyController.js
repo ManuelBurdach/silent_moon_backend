@@ -5,7 +5,7 @@ export const spotifyLogin = async (req, res) => {
     const referrer = req.body.referrer;
     console.log(referrer);
     const spotifyApi = new SpotifyWebApi({
-        redirectUri: `http://localhost:5173/music/login/${referrer}`,
+        redirectUri: `https://silent-moon-frontend-oilk.onrender.com/music/login/${referrer}`,
         clientId: "ab15df07233441198e07735bdb853e7b",
         clientSecret: "7322bd6f3a6548ceaf4d2c468aa69ce1",
     });
