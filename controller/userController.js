@@ -58,6 +58,24 @@ export const addYogaFav = async (req, res) => {
     }
 };
 
+// --------------------------------------------- USER_DELETEMEDITATEFAV
+export const deleteYogaFav = async (req, res) => {
+    try {
+        const db = await getDb();
+        const result = await db.collection(USER_COL).updateOne(
+            { _id: new ObjectId(req.claim.id) },
+            {
+                $pull: {
+                    favoriteYoga: req.body.favorite,
+                },
+            }
+        );
+        res.json("delete a favorite");
+    } catch (err) {
+        res.status(500).end();
+    }
+};
+
 // --------------------------------------------- USER_ADDMEDITATEFAV
 export const addMeditateFav = async (req, res) => {
     try {

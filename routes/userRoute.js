@@ -6,6 +6,7 @@ import {
     first_verify,
     addReminder,
     addYogaFav,
+    deleteYogaFav,
     addMeditateFav,
     deleteMeditateFav,
 } from "../controller/userController.js";
@@ -24,5 +25,6 @@ user_router.post("/login", encryptPassword, login);
 user_router.post("/register", encryptPassword, register);
 user_router.post("/addReminder", verifyUser, addReminder);
 user_router.post("/addYogaFav", verifyUser, addYogaFav);
+user_router.delete("/deleteYogaFav", verifyUser, deleteYogaFav);
 user_router.post("/addMeditateFav", verifyUser, addMeditateFav);
 user_router.delete("/deleteMeditateFav", verifyUser, deleteMeditateFav);
